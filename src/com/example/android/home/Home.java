@@ -109,7 +109,10 @@ public class Home extends Activity {
     private final BroadcastReceiver mWallpaperReceiver = new WallpaperIntentReceiver();
     private final BroadcastReceiver mApplicationsReceiver = new ApplicationsIntentReceiver();
 
-    private GridView mGrid;
+    private GridView mGrid1;
+    private GridView mGrid2;
+    private GridView mGrid3;
+    private GridView mGrid4;
 
     private LayoutAnimationController mShowLayoutAnimation;
     private LayoutAnimationController mHideLayoutAnimation;
@@ -143,8 +146,8 @@ public class Home extends Activity {
         loadApplications(true);
 
         bindApplications();
-        bindFavorites(true);
-        bindRecents();
+//        bindFavorites(true);
+//        bindRecents();
         bindButtons();
 
         mGridEntry = AnimationUtils.loadAnimation(this, R.anim.grid_entry);
@@ -179,7 +182,7 @@ public class Home extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        bindRecents();
+//        bindRecents();
     }
     
     @Override
@@ -194,7 +197,7 @@ public class Home extends Activity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_SAVE_GRID_OPENED, mGrid.getVisibility() == View.VISIBLE);
+        outState.putBoolean(KEY_SAVE_GRID_OPENED, mGrid1.getVisibility() == View.VISIBLE);
     }
 
     /**
@@ -217,11 +220,27 @@ public class Home extends Activity {
      * Creates a new appplications adapter for the grid view and registers it.
      */
     private void bindApplications() {
-        if (mGrid == null) {
-            mGrid = (GridView) findViewById(R.id.all_apps);
+        if (mGrid1 == null) {
+            mGrid1 = (GridView) findViewById(R.id.all_apps);
         }
-        mGrid.setAdapter(new ApplicationsAdapter(this, mApplications));
-        mGrid.setSelection(0);
+        if (mGrid2 == null) {
+            mGrid2 = (GridView) findViewById(R.id.category2);
+        }
+        if (mGrid3 == null) {
+            mGrid3 = (GridView) findViewById(R.id.category3);
+        }
+        if (mGrid4 == null) {
+            mGrid4 = (GridView) findViewById(R.id.category4);
+        }
+        
+        mGrid1.setAdapter(new ApplicationsAdapter(this, mApplications));
+        mGrid1.setSelection(0);
+        mGrid2.setAdapter(new ApplicationsAdapter(this, mApplications));
+        mGrid2.setSelection(0);
+        mGrid3.setAdapter(new ApplicationsAdapter(this, mApplications));
+        mGrid3.setSelection(0);
+        mGrid4.setAdapter(new ApplicationsAdapter(this, mApplications));
+        mGrid4.setSelection(0);
 
         if (mApplicationsStack == null) {
             mApplicationsStack = (ApplicationsStackLayout) findViewById(R.id.faves_and_recents);
@@ -233,10 +252,10 @@ public class Home extends Activity {
      */
     private void bindButtons() {
         mShowApplications = findViewById(R.id.show_all_apps);
-        mShowApplications.setOnClickListener(new ShowApplications());
-        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
+//        mShowApplications.setOnClickListener(new ShowApplications());
+//        mShowApplicationsCheck = (CheckBox) findViewById(R.id.show_all_apps_check);
 
-        mGrid.setOnItemClickListener(new ApplicationLauncher());
+        mGrid1.setOnItemClickListener(new ApplicationLauncher());
     }
 
     /**
@@ -624,10 +643,10 @@ public class Home extends Activity {
 
         if (animate) {
             mGridEntry.setAnimationListener(new ShowGrid());
-            mGrid.startAnimation(mGridEntry);
+            mGrid1.startAnimation(mGridEntry);
         }
 
-        mGrid.setVisibility(View.VISIBLE);
+        mGrid1.setVisibility(View.VISIBLE);
 
         if (!animate) {
             mBlockAnimation = false;
@@ -653,8 +672,8 @@ public class Home extends Activity {
         }
 
         mGridExit.setAnimationListener(new HideGrid());
-        mGrid.startAnimation(mGridExit);
-        mGrid.setVisibility(View.INVISIBLE);
+        mGrid1.startAnimation(mGridExit);
+        mGrid1.setVisibility(View.INVISIBLE);
         mShowApplications.requestFocus();
 
         // This enables a layout animation; if you uncomment this code, you need to
@@ -682,8 +701,8 @@ public class Home extends Activity {
         public void onReceive(Context context, Intent intent) {
             loadApplications(false);
             bindApplications();
-            bindRecents();
-            bindFavorites(false);
+//            bindRecents();
+//            bindFavorites(false);
         }
     }
 
@@ -764,7 +783,7 @@ public class Home extends Activity {
      */
     private class ShowApplications implements View.OnClickListener {
         public void onClick(View v) {
-            if (mGrid.getVisibility() != View.VISIBLE) {
+            if (mGrid1.getVisibility() != View.VISIBLE) {
                 showApplications(true);
             } else {
                 hideApplications();
