@@ -583,7 +583,7 @@ public class Home extends Activity {
             }
             mApplications.clear();
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count/5; i++) {
                 ApplicationInfo application = new ApplicationInfo();
                 ResolveInfo info = apps.get(i);
 
